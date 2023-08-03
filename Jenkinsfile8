@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('setup') {
+            steps {
+                sh "mkdir -p deploy"
+            }
+        stage('nextStage') {
+            steps {
+                sh """
+                    cp -R code/api deploy/
+                    cp docker/Dockerfile.dev deploy/
+                    (cd deploy/api/<Name>.<Name>.Web/ && aws s3 cp --recursive --region=eu-west-1 s3://config.<name>/audience-view/atg/dev/API/ .)
+                """
+            }
+        }
+        stage('anotherStage') {
+            steps {
+                echo "repeat for all your shell steps"
+            }
+        }
+    }
+}
